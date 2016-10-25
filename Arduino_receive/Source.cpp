@@ -189,17 +189,8 @@ void main()
 	printf("opened!!\n");
 	*/
 
-	bool isInitialized = false;
-	unsigned char	sendbuf[1];
-	unsigned char	receive_data[30] = {};
-	int				ret;
-	float			DL, DR, DIS, ANG;
-	unsigned long	len;
-	char *euler_1, *euler_2, *euler_3;
 	float Euler[3];
 	double d_t[2];
-	int i = 0;
-	float			droidOrientation[3];
 	printf("waiting\n");
 	
 
