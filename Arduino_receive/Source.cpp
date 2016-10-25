@@ -12,12 +12,12 @@ HANDLE init_arduino(int arduinoCOM, HANDLE hComm)
 	string com = "\\\\.\\COM" + to_string(arduinoCOM);
 	hComm = CreateFile(com.c_str(), GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 	if (hComm == INVALID_HANDLE_VALUE){
-		printf("ƒVƒŠƒAƒ‹ƒ|[ƒg‚ğŠJ‚­‚±‚Æ‚ª‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B");
+		printf("ã‚·ãƒªã‚¢ãƒ«ãƒãƒ¼ãƒˆã‚’é–‹ãã“ã¨ãŒã§ãã¾ã›ã‚“ã§ã—ãŸã€‚");
 		char z;
 		z = getchar();
 		return 0;
 	}
-	//ƒ|[ƒg‚ğŠJ‚¯‚Ä‚¢‚ê‚Î’ÊMİ’è‚ğs‚¤
+	//ãƒãƒ¼ãƒˆã‚’é–‹ã‘ã¦ã„ã‚Œã°é€šä¿¡è¨­å®šã‚’è¡Œã†
 	else
 	{
 		DCB lpTest;
@@ -37,19 +37,19 @@ HANDLE init_arduino(int arduinoCOM, HANDLE hComm)
 
 	//Sleep(3000);
 	
-	// ƒoƒbƒtƒ@ƒNƒŠƒA
+	// ãƒãƒƒãƒ•ã‚¡ã‚¯ãƒªã‚¢
 	memset(sendbuf, 0x00, sizeof(sendbuf));
-	// ƒpƒPƒbƒgì¬
+	// ãƒ‘ã‚±ãƒƒãƒˆä½œæˆ
 	sendbuf[0] = (unsigned char)1;
-	// ’ÊMƒoƒbƒtƒ@ƒNƒŠƒA
+	// é€šä¿¡ãƒãƒƒãƒ•ã‚¡ã‚¯ãƒªã‚¢
 	PurgeComm(hComm, PURGE_RXCLEAR);
-	// ‘—M
+	// é€ä¿¡
 	ret = WriteFile(hComm, &sendbuf, 5, &len, NULL);
 
 	memset(receive_data, 0x00, sizeof(receive_data));
-	// ’ÊMƒoƒbƒtƒ@ƒNƒŠƒA
+	// é€šä¿¡ãƒãƒƒãƒ•ã‚¡ã‚¯ãƒªã‚¢
 	PurgeComm(hComm, PURGE_RXCLEAR);
-	// Arduino‚©‚çƒf[ƒ^‚ğóM
+	// Arduinoã‹ã‚‰ãƒ‡ãƒ¼ã‚¿ã‚’å—ä¿¡
 	ret = ReadFile(hComm, &receive_data, 1, &len, NULL);
 
 	Sleep(3000);
@@ -90,7 +90,7 @@ void tile_cal(float Euler[3], double d_t[2])
 		d_t[1] = asin(z);
 	}
 	printf("%lf", 2 * M_PI - Euler[0]);
-	printf("(ƒ³,ƒÆ) = (%lf,%lf)\n", d_t[0], d_t[1]);
+	printf("(Î¦,Î¸) = (%lf,%lf)\n", d_t[0], d_t[1]);
 }
 
 void receive_euler(HANDLE hComm, float Euler[3])
@@ -118,21 +118,21 @@ void receive_euler(HANDLE hComm, float Euler[3])
 	}
 	
 	if (!hComm)	return;
-	// ƒoƒbƒtƒ@ƒNƒŠƒA
+	// ãƒãƒƒãƒ•ã‚¡ã‚¯ãƒªã‚¢
 	memset(sendbuf, 0x00, sizeof(sendbuf));
-	// ƒpƒPƒbƒgì¬
+	// ãƒ‘ã‚±ãƒƒãƒˆä½œæˆ
 	sendbuf[0] = (unsigned char)1;
-	// ’ÊMƒoƒbƒtƒ@ƒNƒŠƒA
+	// é€šä¿¡ãƒãƒƒãƒ•ã‚¡ã‚¯ãƒªã‚¢
 	PurgeComm(hComm, PURGE_RXCLEAR);
-	// ‘—M
+	// é€ä¿¡
 	ret = WriteFile(hComm, &sendbuf, 1, &len, NULL);
 
 	
-	// ƒoƒbƒtƒ@ƒNƒŠƒA
+	// ãƒãƒƒãƒ•ã‚¡ã‚¯ãƒªã‚¢
 	memset(receive_data, 0x00, sizeof(receive_data));
-	// ’ÊMƒoƒbƒtƒ@ƒNƒŠƒA
+	// é€šä¿¡ãƒãƒƒãƒ•ã‚¡ã‚¯ãƒªã‚¢
 	PurgeComm(hComm, PURGE_RXCLEAR);
-	// Arduino‚©‚çƒf[ƒ^‚ğóM
+	// Arduinoã‹ã‚‰ãƒ‡ãƒ¼ã‚¿ã‚’å—ä¿¡
 	ret = ReadFile(hComm, &receive_data, 20, &len, NULL);
 	//cout << static_cast<bitset<8>>(receive_data[0]) << "," << static_cast<bitset<8>>(receive_data[1] )<< endl;
 
@@ -140,7 +140,7 @@ void receive_euler(HANDLE hComm, float Euler[3])
 	
 	
 
-	//‰Šú‰»‚³‚ê‚Ä‚¢‚È‚¯‚ê‚Î‰Šú‰»(‰‚ß‚Ìƒf[ƒ^‚ğÌ‚Ä‚é)
+	//åˆæœŸåŒ–ã•ã‚Œã¦ã„ãªã‘ã‚Œã°åˆæœŸåŒ–(åˆã‚ã®ãƒ‡ãƒ¼ã‚¿ã‚’æ¨ã¦ã‚‹)
 	if (!isInitialized)
 	{
 		isInitialized = true;
@@ -164,18 +164,18 @@ void main()
 {
 	int arduinoCOM=71;
 	HANDLE hComm=NULL;
-	//ƒVƒŠƒAƒ‹ƒ|[ƒg‚ğŠJ‚¢‚Äƒnƒ“ƒhƒ‹‚ğæ“¾
+	//ã‚·ãƒªã‚¢ãƒ«ãƒãƒ¼ãƒˆã‚’é–‹ã„ã¦ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—
 	hComm = init_arduino(arduinoCOM, hComm);
 	/*
 	string com = "\\\\.\\COM" + to_string(arduinoCOM);
 	hComm = CreateFile(com.c_str(), GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 	if (hComm == INVALID_HANDLE_VALUE){
-		printf("ƒVƒŠƒAƒ‹ƒ|[ƒg‚ğŠJ‚­‚±‚Æ‚ª‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B");
+		printf("ã‚·ãƒªã‚¢ãƒ«ãƒãƒ¼ãƒˆã‚’é–‹ãã“ã¨ãŒã§ãã¾ã›ã‚“ã§ã—ãŸã€‚");
 		char z;
 		z = getchar();
 		return;
 	}
-	//ƒ|[ƒg‚ğŠJ‚¯‚Ä‚¢‚ê‚Î’ÊMİ’è‚ğs‚¤
+	//ãƒãƒ¼ãƒˆã‚’é–‹ã‘ã¦ã„ã‚Œã°é€šä¿¡è¨­å®šã‚’è¡Œã†
 	else
 	{
 		DCB lpTest;
@@ -201,28 +201,28 @@ void main()
 		system("cls");
 		//Sleep(20);
 		printf("%d\n", hComm);
-		// ƒnƒ“ƒhƒ‹ƒ`ƒFƒbƒN
+		// ãƒãƒ³ãƒ‰ãƒ«ãƒã‚§ãƒƒã‚¯
 		if (!hComm)	return;
-		// ƒoƒbƒtƒ@ƒNƒŠƒA
+		// ãƒãƒƒãƒ•ã‚¡ã‚¯ãƒªã‚¢
 		memset(sendbuf, 0x00, sizeof(sendbuf));
-		// ƒpƒPƒbƒgì¬
+		// ãƒ‘ã‚±ãƒƒãƒˆä½œæˆ
 		sendbuf[0] = (unsigned char)1;
-		// ’ÊMƒoƒbƒtƒ@ƒNƒŠƒA
+		// é€šä¿¡ãƒãƒƒãƒ•ã‚¡ã‚¯ãƒªã‚¢
 		PurgeComm(hComm, PURGE_RXCLEAR);
-		// ‘—M
+		// é€ä¿¡
 		ret = WriteFile(hComm, &sendbuf, 1, &len, NULL);
 
 
-		// ƒoƒbƒtƒ@ƒNƒŠƒA
+		// ãƒãƒƒãƒ•ã‚¡ã‚¯ãƒªã‚¢
 		memset(receive_data, 0x00, sizeof(receive_data));
-		// ’ÊMƒoƒbƒtƒ@ƒNƒŠƒA
+		// é€šä¿¡ãƒãƒƒãƒ•ã‚¡ã‚¯ãƒªã‚¢
 		PurgeComm(hComm, PURGE_RXCLEAR);
-		// Arduino‚©‚çƒf[ƒ^‚ğóM
+		// Arduinoã‹ã‚‰ãƒ‡ãƒ¼ã‚¿ã‚’å—ä¿¡
 		ret = ReadFile(hComm, &receive_data, 20, &len, NULL);
 		//cout << static_cast<bitset<8>>(receive_data[0]) << "," << static_cast<bitset<8>>(receive_data[1] )<< endl;
 
 
-		//‰Šú‰»‚³‚ê‚Ä‚¢‚È‚¯‚ê‚Î‰Šú‰»(‰‚ß‚Ìƒf[ƒ^‚ğÌ‚Ä‚é)
+		//åˆæœŸåŒ–ã•ã‚Œã¦ã„ãªã‘ã‚Œã°åˆæœŸåŒ–(åˆã‚ã®ãƒ‡ãƒ¼ã‚¿ã‚’æ¨ã¦ã‚‹)
 		if (!isInitialized)
 		{
 			isInitialized = true;
@@ -247,6 +247,10 @@ void main()
 		
 		tile_cal(Euler, d_t);
 		
+		double x,y,rad = M_PI - Euler[0];
+	Spur_get_pos_GL(&x, &y, &rad);
+	Spur_set_pos_GL(x, y, 2*M_PI - Euler[0]);
+	Spur_tilt_FS(d_t[0], d_t[1]);
 
 	}
 }
