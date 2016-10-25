@@ -30,6 +30,29 @@ HANDLE init_arduino(int arduinoCOM, HANDLE hComm)
 	}
 	printf("opened!!\n");
 
+	unsigned char	sendbuf[1];
+	int				ret;
+	unsigned long	len;
+	unsigned char	receive_data[30] = {};
+
+	//Sleep(3000);
+	
+	// バッファクリア
+	memset(sendbuf, 0x00, sizeof(sendbuf));
+	// パケット作成
+	sendbuf[0] = (unsigned char)1;
+	// 通信バッファクリア
+	PurgeComm(hComm, PURGE_RXCLEAR);
+	// 送信
+	ret = WriteFile(hComm, &sendbuf, 5, &len, NULL);
+
+	memset(receive_data, 0x00, sizeof(receive_data));
+	// 通信バッファクリア
+	PurgeComm(hComm, PURGE_RXCLEAR);
+	// Arduinoからデータを受信
+	ret = ReadFile(hComm, &receive_data, 1, &len, NULL);
+
+	Sleep(3000);
 	return hComm;
 }
 void tile_cal(float Euler[3], double d_t[2])
@@ -66,9 +89,77 @@ void tile_cal(float Euler[3], double d_t[2])
 		d_t[0] = -acos(x);
 		d_t[1] = asin(z);
 	}
+	printf("%lf", 2 * M_PI - Euler[0]);
 	printf("(Φ,θ) = (%lf,%lf)\n", d_t[0], d_t[1]);
 }
 
+void receive_euler(HANDLE hComm, float Euler[3])
+{
+	
+	DWORD start, end;
+	start = GetTickCount();
+	bool isInitialized = false;
+	unsigned char	sendbuf[1];
+	unsigned char	receive_data[30] = {};
+	int				ret;
+	float			DL, DR, DIS, ANG;
+	unsigned long	len;
+	char *euler_1, *euler_2, *euler_3;
+	int i = 0;
+	float			droidOrientation[3];
+
+
+	end = GetTickCount();
+	if ((end - start) < 15)
+	{
+		int sleeptime = 15 - (int)(end - start);
+		Sleep(sleeptime);
+		end = GetTickCount();
+	}
+	
+	if (!hComm)	return;
+	// バッファクリア
+	memset(sendbuf, 0x00, sizeof(sendbuf));
+	// パケット作成
+	sendbuf[0] = (unsigned char)1;
+	// 通信バッファクリア
+	PurgeComm(hComm, PURGE_RXCLEAR);
+	// 送信
+	ret = WriteFile(hComm, &sendbuf, 1, &len, NULL);
+
+	
+	// バッファクリア
+	memset(receive_data, 0x00, sizeof(receive_data));
+	// 通信バッファクリア
+	PurgeComm(hComm, PURGE_RXCLEAR);
+	// Arduinoからデータを受信
+	ret = ReadFile(hComm, &receive_data, 20, &len, NULL);
+	//cout << static_cast<bitset<8>>(receive_data[0]) << "," << static_cast<bitset<8>>(receive_data[1] )<< endl;
+
+	
+	
+	
+
+	//初期化されていなければ初期化(初めのデータを捨てる)
+	if (!isInitialized)
+	{
+		isInitialized = true;
+		//return ;
+	}
+	
+	printf("%s...\n", receive_data);
+	euler_1 = strtok((char*)receive_data, ",");
+	euler_2 = strtok(NULL, ",");
+	euler_3 = strtok(NULL, ",");
+
+
+	Euler[0] = strtod(euler_1, NULL);
+	Euler[1] = strtod(euler_2, NULL);
+	Euler[2] = strtod(euler_3, NULL);
+	printf("%f\n", Euler[0]);
+	printf("%f\n", Euler[1]);
+	printf("%f\n", Euler[2]);
+}
 void main()
 {
 	int arduinoCOM=71;
@@ -106,15 +197,19 @@ void main()
 	unsigned long	len;
 	char *euler_1, *euler_2, *euler_3;
 	float Euler[3];
+	double d_t[2];
 	int i = 0;
 	float			droidOrientation[3];
-	Sleep(2000);
+	printf("waiting\n");
+	
 
 	while (1)
 	{
-		system("cls");
-		//Sleep(5);
 		
+		/*
+		system("cls");
+		//Sleep(20);
+		printf("%d\n", hComm);
 		// ハンドルチェック
 		if (!hComm)	return;
 		// バッファクリア
@@ -142,7 +237,7 @@ void main()
 			isInitialized = true;
 			//return ;
 		}
-		printf("%s\n", receive_data);
+		printf("%s...\n", receive_data);
 		euler_1 = strtok((char*)receive_data, ",");
 		euler_2 = strtok(NULL, ",");
 		euler_3 = strtok(NULL, ",");
@@ -154,11 +249,14 @@ void main()
 		printf("%f\n", Euler[0]);
 		printf("%f\n", Euler[1]);
 		printf("%f\n", Euler[2]);
-		double d_t[2];
+		*/
+		receive_euler(hComm, Euler);
+		
 
 		
 		tile_cal(Euler, d_t);
 		
+
 	}
 }
 
