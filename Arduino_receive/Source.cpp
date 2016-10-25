@@ -252,6 +252,24 @@ void main()
 	Spur_set_pos_GL(x, y, 2*M_PI - Euler[0]);
 	Spur_tilt_FS(d_t[0], d_t[1]);
 
+		/*
+		if (Spur_over_line_LC(bor_x_GL, bor_y_GL, tar_th_LC))
+				{
+					
+					if (tar_x_LC > 0)
+					{
+						bor_x_GL += 2.0;
+					}
+					else
+					{
+						bor_x_GL -= 2.0;
+					}
+					
+					std::cout<<"tar_th_LC" << tar_th_LC<< "\n";
+					Spur_line_LC(bor_x_GL, bor_y_GL, tar_th_LC);
+					
+				}
+		*/
 	}
 }
 
