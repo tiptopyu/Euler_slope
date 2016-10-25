@@ -247,7 +247,7 @@ void main()
 		
 		tile_cal(Euler, d_t);
 		
-		double x,y,rad = M_PI - Euler[0];
+		double x,y,rad;
 	Spur_get_pos_GL(&x, &y, &rad);
 	Spur_set_pos_GL(x, y, 2*M_PI - Euler[0]);
 	Spur_tilt_FS(d_t[0], d_t[1]);
